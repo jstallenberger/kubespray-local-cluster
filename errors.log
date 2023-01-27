@@ -1,0 +1,6 @@
+'service-account-api-audiences' deprecated, use 'api-audiences' instead
+
+in kubespray container: 'pip3 install jmespath'
+
+in kubelet logs:
+Jan 27 23:42:16 master100 kubelet[53783]: E0127 23:42:16.449487   53783 summary_sys_containers.go:48] "Failed to get system container stats" err="failed to get cgroup stats for \"/kube.slice/containerd.>

@@ -1,0 +1,70 @@
+---
+k8s_kubespray_component_versions:
+  v2.21.0:
+    containerd_version: 1.6.15
+    kube_version: v1.25.6
+    etcd_version: v3.5.6
+    calico_version: v3.24.5
+
+k8s_kubespray_version: v2.21.0
+
+kube_version: "{{ k8s_kubespray_component_versions[k8s_kubespray_version].kube_version }}"
+etcd_version: "{{ k8s_kubespray_component_versions[k8s_kubespray_version].etcd_version }}"
+calico_version: "{{ k8s_kubespray_component_versions[k8s_kubespray_version].calico_version }}"
+containerd_version: "{{ k8s_kubespray_component_versions[k8s_kubespray_version].containerd_version }}"
+
+container_manager: containerd
+# containerd_registries:
+containerd_use_systemd_cgroup: true
+image_command_tool: crictl
+
+containerd_default_runtime: runc
+containerd_runc_runtime:
+  name: runc
+  type: io.containerd.runc.v2
+  engine: ""
+  root: ""
+  options:
+    systemdCgroup: "true"
+
+etcd_deployment_type: host
+
+cluster_name: home-cluster
+# dns_domain: cluster.local
+resolvconf_mode: none
+
+download_run_once: false
+
+drain_nodes: false
+
+kube_apiserver_enable_admission_plugins:
+  - NodeRestriction
+  - PodNodeSelector
+  - PersistentVolumeClaimResize
+
+kubelet_cgroup_driver: systemd
+
+dashboard_enabled: true
+
+enable_dual_stack_networks: false
+
+kube_network_plugin: calico
+
+calico_mtu: 1500
+calico_veth_mtu: 1480
+calico_ipip_mode: CrossSubnet
+calico_vxlan_mode: Never
+calico_network_backend: bird
+
+calico_datastore: etcd
+
+kube_proxy_mode: ipvs
+kube_proxy_metrics_bind_address: 0.0.0.0:10249
+
+kubernetes_audit: false
+
+kube_kubeadm_apiserver_extra_args:
+  service-account-signing-key-file: /etc/kubernetes/ssl/sa.key
+  service-account-key-file: /etc/kubernetes/ssl/sa.pub
+  service-account-issuer: https://kubernetes.default.svc
+  api-audiences: api
